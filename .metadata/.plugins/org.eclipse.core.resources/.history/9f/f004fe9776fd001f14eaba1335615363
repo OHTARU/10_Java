@@ -1,0 +1,11 @@
+
+public class Ex05_max_value {
+
+	public static void main(String[] args) {
+
+		// (실습) 숫자 3개 중 가장 큰 수를 구하시오
+		
+		
+	}
+
+}

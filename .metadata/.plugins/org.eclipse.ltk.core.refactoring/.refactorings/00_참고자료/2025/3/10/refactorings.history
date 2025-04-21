@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 2 elements to &apos;02_Primitive_type/src&apos;&#x0D;&#x0A;- Original project: &apos;00_참고자료&apos;&#x0D;&#x0A;- Destination element: &apos;02_Primitive_type/src&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     기본데이터타입.png&#x0D;&#x0A;     기본데이터타입범위.png" description="Copy files" destination="=02_Primitive_type/src" element1="기본데이터타입.png" element2="기본데이터타입범위.png" files="2" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1741308446307" units="0" version="1.0"/>
+</session>

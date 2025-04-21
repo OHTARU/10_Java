@@ -1,0 +1,12 @@
+package Day250311;
+
+public class Day250311_SecondCar {
+
+	public static void main(String[] args) {
+		Day250311_MainCar myCar = new Day250311_MainCar();
+		
+		myCar.fullThrottle();
+		myCar.speed(200);
+	}
+
+}

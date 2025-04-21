@@ -1,0 +1,11 @@
+package com.mystudy.poly04_Interface;
+
+public class TypeTest {
+
+	public static void main(String[] args) {
+
+		Cat cat = new Cat();
+		System.out.println("cat name : " + cat.getName(););
+	}
+
+}

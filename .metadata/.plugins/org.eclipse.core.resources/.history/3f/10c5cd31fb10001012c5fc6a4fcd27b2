@@ -1,0 +1,37 @@
+package com.mystudy.socket02_echo;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.InetAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
+
+public class TCPServerEcho {
+
+	public static void main(String[] args) {
+		// (실습) 서버측 : 읽고, 쓰기
+		// 클라이언트에서 보내온 메시지를 1번 받고, - BufferedReader
+		// 받은 메시지를 클라이언트에게 다시 보내기 - PrintWriter
+		// BufferedReader <- InputStreamReader <- InputStream
+		// PrintWriter <- OutputStream
+		// ------------------------------------------
+
+		System.out.println("::: 서버 시작");
+		ServerSocket server = null;
+		try {
+			server = new ServerSocket(10000);
+			System.out.println("서버/IP : " + InetAddress.getLocalHost());
+			System.out.println(">> 서버(ServerSocket) 대기중~~~");
+			Socket socket = server.accept();
+			
+			OutputStream os = socket.getOutputStream();
+			
+			
+			InputStream
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		System.out.println("::: 서버 종료");
+	}
+
+}

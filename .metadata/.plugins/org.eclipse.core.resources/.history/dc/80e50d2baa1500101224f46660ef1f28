@@ -1,0 +1,16 @@
+
+public class TodoListManager {
+
+	private static final String FILE_NAME = "todo.txt";
+
+	public static void loadTodo(Todolist todolist) {
+		File file = new File(FILE_NAME);
+	}
+	
+	
+	
+	public static void main(String[] args) {
+
+	}
+
+}

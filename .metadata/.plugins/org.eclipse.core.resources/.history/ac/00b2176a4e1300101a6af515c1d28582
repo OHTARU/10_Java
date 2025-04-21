@@ -1,0 +1,14 @@
+package com.mystudy.net_multi1;
+
+public class TCPServerMulit_InnerClass {
+
+	public TCPServerMulit_InnerClass() {
+
+	}
+
+	private void serverStart() {
+		
+		
+		System.out.println(">>> 서버 시작");
+	}
+}

@@ -1,0 +1,7 @@
+import java.util.Scanner;
+
+public class TodoFilter {
+
+	Scanner sc = new Scanner(System.in);
+
+}

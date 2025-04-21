@@ -1,0 +1,10 @@
+package com.mystudy.set1_hashset;
+
+public class HashSet_Lotto {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">&#x0A;<refactoring comment="Rename resource &apos;19_InputOutputIO&apos; to &apos;19_IO_InputStream_OutputStream&apos;" description="Rename resource &apos;19_InputOutputIO&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="/19_InputOutputIO" name="19_IO_InputStream_OutputStream" stamp="1743471220106" updateReferences="true"/>&#x0A;<refactoring comment="Delete resource &apos;ITWILL_Project&apos;" deleteContents="false" description="Delete resource &apos;ITWILL_Project&apos;" element1="/ITWILL_Project" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1743757311403"/>
+</session>

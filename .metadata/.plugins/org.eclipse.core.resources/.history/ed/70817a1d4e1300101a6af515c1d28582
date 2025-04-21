@@ -1,0 +1,9 @@
+package com.mystudy.net_multi1;
+
+public class TCPServerMulit_InnerClass {
+
+	public TCPServerMulit_InnerClass() {
+		
+	}
+	
+}

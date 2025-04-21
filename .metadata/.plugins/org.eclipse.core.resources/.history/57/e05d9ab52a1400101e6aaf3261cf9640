@@ -1,0 +1,48 @@
+import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
+
+public class TodoListFile {
+
+    private static final String fileName = "todolist.txt";
+
+    public void saveFile(List<Todo> list) {
+        File file = new File(fileName);
+        try (FileOutputStream fos = new FileOutputStream(file);
+             OutputStreamWriter osw = new OutputStreamWriter(fos, "UTF-8");
+             ObjectOutputStream oos = new ObjectOutputStream(fos)) { // ObjectOutputStream은 OutputStreamWriter를 감싸지 않습니다.
+            oos.writeObject(list);
+            System.out.println("파일 저장 완료");
+        } catch (IOException e) {
+            System.err.println("파일 저장 오류: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public List<Todo> readFile() {
+        List<Todo> list = new ArrayList<>();
+        File file = new File(fileName);
+        if (!file.exists()) {
+            System.out.println("파일이 존재하지 않습니다");
+            return list;
+        }
+
+        try (FileInputStream fis = new FileInputStream(file);
+             InputStreamReader isr = new InputStreamReader(fis, "UTF-8");
+             ObjectInputStream ois = new ObjectInputStream(fis)) { // ObjectInputStream은 InputStreamReader를 감싸지 않습니다.
+            list = (List<Todo>) ois.readObject();
+        } catch (FileNotFoundException e) {
+            System.err.println("파일을 찾을 수 없습니다: " + e.getMessage());
+        } catch (IOException e) {
+            System.err.println("파일 읽기 오류: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            System.err.println("클래스를 찾을 수 없습니다: " + e.getMessage());
+        } catch (ClassCastException e) {
+            System.err.println("잘못된 형식의 파일입니다: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("알 수 없는 오류 발생: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return list;
+    }
+}

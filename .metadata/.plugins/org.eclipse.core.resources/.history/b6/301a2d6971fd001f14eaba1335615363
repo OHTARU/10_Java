@@ -1,0 +1,49 @@
+import java.util.Scanner;
+
+public class Ex04_if_sungjuk {
+
+	public static void main(String[] args) {
+
+		// 실습 / 성적처리
+		// 입력 : 국어(kor) , 영어(eng) , 수학(math) 
+		// 처리 : 총점 , 평균 구하기
+		// 총점(tot)
+		// 평균(avg)
+		
+		
+		
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("국어 영어 수학 점수를 입력해주세요 : ");
+		String input = scanner.nextLine();
+		
+		String[] scores = input.split(",");
+		
+		int kor = Integer.valueOf(scores[0]);
+		int eng = Integer.valueOf(scores[1]);;
+		int math = Integer.valueOf(scores[2]);;
+		
+		int tot = kor + eng + math;
+		float avg = ((float)tot) /F;
+		System.out.println(avg);
+		String result;
+
+		
+		if (avg >=  90 && avg <= 100) {
+			result = "A";
+		} else if (avg >= 80 && avg < 90) {
+			result = "B";
+		} else if (avg >= 70 && avg < 80) {
+			result = "C";
+		} else if (avg >= 60 && avg < 70) {
+			result = "D";
+		} else {
+			result = "F";
+		}
+		
+		System.out.println("<결과 출력>");
+		System.out.println("국어 : " + kor + "\n영어 : " +  eng + "\n수학 : " + math);
+		System.out.println("총점 : " + tot);
+		System.out.printf("평균 : %.2f", avg , "\n점수 : " + result);
+	}
+
+}

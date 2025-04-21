@@ -1,0 +1,5 @@
+package com.mystudy.poly04_Interface;
+
+abstract class AbstractAnimal {
+
+}

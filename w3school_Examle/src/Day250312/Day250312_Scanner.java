@@ -1,0 +1,17 @@
+package Day250312;
+
+import java.util.Scanner;
+
+public class Day250312_Scanner {
+
+	public static void main(String[] args) {
+
+		Scanner myObj = new Scanner(System.in);
+		System.out.println("이름을 입력하세요");
+		
+		String userName = myObj.nextLine();
+		System.out.println("이름 : " + userName);
+		
+	}
+
+}

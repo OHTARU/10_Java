@@ -1,0 +1,35 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+
+public class TodoListManager {
+
+	private static final String FILE_NAME = "todo.txt";
+
+	public static void loadTodo(List<Todo> list) {
+		File file = new File(FILE_NAME);
+
+		if (!file.exists()) {
+			System.out.println("저장된 파일 없음");
+			return;
+		}
+
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(FILE_NAME))) {
+			for (Todo todo : list) {
+				String line = todo.getLocalDateTime().toString() + "##" + todo.getTitle() + "##" + todo.getComment()
+						+ "##" + todo.getStar() + "##" + todo.isCheck() + "##" + todo.getKey();
+				bw.write(line);
+				bw.newline();
+			}
+		} catch (IOException e) {
+
+		}
+	}
+
+	public static void main(String[] args) {
+
+	}
+
+}

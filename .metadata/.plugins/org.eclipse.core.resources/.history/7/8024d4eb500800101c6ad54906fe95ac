@@ -1,0 +1,7 @@
+package com.mystudy.poly04_Interface;
+
+public interface Animal {
+	void eat();
+	
+	
+}

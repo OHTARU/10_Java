@@ -1,0 +1,20 @@
+package com.mystudy.poly04_Interface;
+
+class Cat implements Animal{
+
+	@Override
+	public void eat() {
+		
+	}
+
+	@Override
+	public void sleep() {
+		System.out.println(">>잠을 잔다");
+	}
+
+	@Override
+	public void sound() {
+		System.out.println(">>야옹~~~");
+	}
+	
+}

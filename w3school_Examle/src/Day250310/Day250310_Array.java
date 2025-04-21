@@ -1,0 +1,23 @@
+package Day250310;
+
+public class Day250310_Array {
+
+	public static void main(String[] args) {
+
+//		String[] cars = {"Volvo", "BMW", "Ford", "Mazda"};
+//		cars[0] = "Opel";
+//		System.out.println(cars[0]);
+//		System.out.println(cars.length);
+//		
+//		
+//		for (int i = 0; i < cars.length; i++) {
+//			System.out.println(cars[i]);
+//		}
+		
+		
+		
+		
+		
+	}
+
+}

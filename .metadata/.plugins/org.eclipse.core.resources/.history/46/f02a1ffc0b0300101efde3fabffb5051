@@ -1,0 +1,24 @@
+package w3school_Example;
+
+public class Day250311_Method_If_else {
+
+	static void myMethod(String fname , int age) {
+		System.out.println(fname + " is " + age);
+		
+		
+		if (age <= 19) {
+			System.out.println(fname +  "님은 미성년자입니다");
+		} else {
+			System.out.println(fname + "님은 성인입니다.");
+		}
+		
+		
+	}
+	
+	public static void main(String[] args) {
+
+		myMethod("창현",25);
+		
+	}
+
+}

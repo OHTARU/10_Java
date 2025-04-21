@@ -1,0 +1,42 @@
+// 1. 패키지 선언: 코드를 정리할 폴더 지정
+package Day250314;
+
+// 2. 부모 클래스 정의: 모든 동물의 공통 설계도
+class Animal {
+    // 부모 클래스의 기본 메서드: 동물 소리를 정의
+    public void animalSound() {
+        System.out.println("동물 소리"); // 기본 동물 소리 출력
+    }
+}
+
+// 3. 자식 클래스 1 정의: Pig 클래스, Animal을 상속받음
+class Pig extends Animal {
+    // 오버라이딩: 부모의 animalSound를 돼지 소리로 재정의
+    public void animalSound() {
+        System.out.println("돼지소리"); // 돼지 고유의 소리 출력
+    }
+}
+
+// 3. 자식 클래스 2 정의: Dog 클래스, Animal을 상속받음
+class Dog extends Animal {
+    // 오버라이딩: 부모의 animalSound를 개 소리로 재정의
+    public void animalSound() {
+        System.out.println("개소리"); // 개 고유의 소리 출력
+    }
+}
+
+// 4. 메인 클래스 정의: 다형성을 테스트할 실행 클래스
+public class Day250314_Polymorphism {
+    // main 메서드: 프로그램 시작점
+    public static void main(String[] args) {
+        // 객체 생성: 부모 타입(Animal)으로 다양한 객체 참조
+        Animal myAnimal = new Animal(); // 일반 동물 객체
+        Animal myPig = new Pig();       // 돼지 객체를 Animal 타입으로
+        Animal myDog = new Dog();       // 개 객체를 Animal 타입으로
+
+        // 다형성 테스트: 같은 메서드 호출, 다른 결과 출력
+        myAnimal.animalSound(); // 출력: "동물 소리"
+        myPig.animalSound();    // 출력: "돼지소리"
+        myDog.animalSound();    // 출력: "개소리"
+    }
+}

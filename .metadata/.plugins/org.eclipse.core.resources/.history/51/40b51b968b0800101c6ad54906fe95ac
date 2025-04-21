@@ -1,0 +1,20 @@
+package com.mystudy.innerclass;
+
+
+interface TestInter{
+	int DATA = 100;
+	void printData();
+}
+
+class TestInterImpl implements TestInter
+
+
+public class AnnonymousClassTest {
+
+	public static void main(String[] args) {
+		
+		
+		
+	}
+
+}

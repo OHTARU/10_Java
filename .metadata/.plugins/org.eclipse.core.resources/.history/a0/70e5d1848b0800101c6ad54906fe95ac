@@ -1,0 +1,18 @@
+package com.mystudy.innerclass;
+
+
+interaface TestInter{
+	int DATA = 100;
+	void printData();
+}
+
+
+public class AnnonymousClassTest {
+
+	public static void main(String[] args) {
+		
+		
+		
+	}
+
+}

@@ -1,0 +1,7 @@
+package com.mystudy.innerclass;
+
+public class InstanceClassTest {
+	int a = 100;
+	
+	
+}

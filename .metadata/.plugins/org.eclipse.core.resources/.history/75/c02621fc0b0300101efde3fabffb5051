@@ -1,0 +1,27 @@
+package w3school_Example;
+
+public class Day250310_MultipleObjects {
+	
+	int x = 5;
+	
+	String fname = "창현";
+	String lname = "연";
+	int age = 25;
+	
+	public static void main(String[] args) {
+
+		
+		Day250310_MultipleObjects myObj = new Day250310_MultipleObjects();
+		Day250310_MultipleObjects myObj1 = new Day250310_MultipleObjects();
+		Day250310_MultipleObjects myObj2 = new Day250310_MultipleObjects();
+		
+		myObj2.x = 25;
+		
+		System.out.println(myObj1.x);
+		System.out.println(myObj2.x);
+		
+		System.out.println("이름 : " + myObj.lname + myObj.fname + " 나이 : "+myObj.age);
+		
+		
+	}
+}

@@ -1,0 +1,39 @@
+// 1. 패키지 선언 (선택 사항, 필요 시 작성)
+// - 코드의 소속 패키지를 지정합니다.
+package Day250317;
+
+// 2. 외부 클래스 정의
+// - OuterClass라는 이름의 외부 클래스를 생성합니다.
+class OuterClass {
+    // 2-1. 외부 클래스의 변수 선언
+    // - int형 변수 x를 선언하고 10으로 초기화합니다.
+    int x = 10;
+    
+    // 2-2. 내부 클래스 정의
+    // - OuterClass 안에 InnerClass라는 내부 클래스를 정의합니다.
+    class InnerClass {
+        // 2-2-1. 내부 클래스의 변수 선언
+        // - int형 변수 y를 선언하고 15로 초기화합니다.
+        int y = 15;
+    }
+}
+
+// 3. 메인 클래스 정의
+// - 프로그램 실행을 위한 메인 클래스를 정의합니다.
+public class Day250317_Innerclass {
+    // 3-1. main 메서드 작성
+    // - 프로그램의 진입점(entry point)으로, 실행 시작 지점입니다.
+    public static void main(String[] args) {
+        // 3-2. 외부 클래스 객체 생성
+        // - OuterClass의 인스턴스를 생성하여 myOuter 변수에 저장합니다.
+        OuterClass myOuter = new OuterClass();
+        
+        // 3-3. 내부 클래스 객체 생성
+        // - myOuter 객체를 통해 InnerClass의 인스턴스를 생성합니다.
+        OuterClass.InnerClass myInner = myOuter.new InnerClass();
+        
+        // 3-4. 결과 출력
+        // - myInner.y (15)와 myOuter.x (10)를 더해 25를 출력합니다.
+        System.out.println(myInner.y + myOuter.x);
+    }
+}

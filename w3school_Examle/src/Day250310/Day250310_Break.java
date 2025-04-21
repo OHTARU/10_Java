@@ -1,0 +1,35 @@
+package Day250310;
+
+public class Day250310_Break {
+
+	public static void main(String[] args) {
+
+//		for (int i = 0; i < 10; i++) {
+//			if (i == 4) {
+//				break;
+//			}
+//			System.out.println(i);
+//		}
+
+//		int i = 0;
+//		while (i < 10) {
+//			System.out.println(i);
+//			i++;
+//			if (i == 4) {
+//				System.out.println("4 입니다.");
+//				break;
+//			}
+//		}
+
+		int i = 0;
+		while (i < 10) {
+			if (i == 4) {
+				i++;
+				continue;
+			}
+			System.out.println(i);
+			i++;
+		}
+	}
+
+}

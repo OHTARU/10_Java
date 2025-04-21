@@ -1,0 +1,9 @@
+package com.mystudy.jdbc1_statement;
+
+class Select_Student {
+
+	public static void main(String[] args) {
+
+	}
+
+}

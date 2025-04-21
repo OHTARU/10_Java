@@ -1,0 +1,28 @@
+import java.net.ServerSocket;
+
+public class TCPServerLine {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		// 서버측 : 클라이언트가 보내는 메시지를 1번 읽어서 화면출력
+		// BufferedReader 사용해서 라인단위로 읽기
+		// BuffererReader < -- InputStreamReader --> InputStream
+
+		System.out.println("::: 서버 시작");
+
+		ServerSocket server = null;
+		
+		// 1. 서버 소켓 생성
+		server = new ServerSocket(10000);
+		// 2. 서버소켓 대기중 접속한 Socket과 통신할 수 있는 Socket 객체 생성
+		
+		// 3. Socket에서 부터 InputStream , OutputStream 객체 생성
+		
+		// 4. 받을 메시지 있으면 릭기
+		
+		// 5. 보낼 메시지가 있으면 보내기
+		
+		// 6. 자원 반납
+	}
+
+}

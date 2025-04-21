@@ -1,0 +1,23 @@
+import java.io.*;
+import java.net.*;
+
+public class ChatClient {
+    public static void main(String[] args) {
+        String serverAddress = "192.168.18.31"; // 서버 IP 주소
+        int serverPort = 12345;
+
+        try (Socket socket = new Socket(serverAddress, serverPort);
+             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+             BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in))) {
+
+            System.out.print("이름을 입력해주세요: ");
+            String username = stdIn.readLine();
+            out.println(username);
+
+            new Thread(() -> {
+                try {
+                    String message;
+                    while ((message = in.readLine()) != null) {
+                        if (message.startsWith("TEXT:")) {
+                            System

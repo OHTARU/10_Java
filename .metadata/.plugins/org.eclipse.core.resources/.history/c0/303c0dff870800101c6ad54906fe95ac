@@ -1,0 +1,13 @@
+package com.mystudy.innerclass;
+
+public class LocalClass {
+	int a = 100;
+
+	void print() {
+		System.out.println("a : " + a);
+	}
+	
+	void innerTest(int k) {
+		
+	}
+}

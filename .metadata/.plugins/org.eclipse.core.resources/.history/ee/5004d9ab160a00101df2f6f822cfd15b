@@ -1,0 +1,35 @@
+package com.mystudy.set1_hashset;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class HashSet_Lotto {
+
+	public static void main(String[] args) {
+
+		// (실습) Set을 이용한 로또 만들기 : 1~45 숫자 중 6개(랜덤숫자)를 Set에 저장
+		// 1. 로또번호 6개를 추첨해서 Set에 저장하고 화면 출력
+		// Math.random() : 0.0 ~ 0.9999... 실수형 데이터 생성 (0 <= ran < 1)
+		// (int)(Math.random() * 45 + 1); // 1~45 랜덤(임의의)한 정수값
+		// 2. 출력 작은 숫자부터 큰 숫자 형태로
+		// 예) 금주의 로또번호 : 5, 8, 10, 25, 33, 41
+		System.out.println((int) (Math.random() * 45 + 1));
+
+		Set<Integer> lottoNumber = new HashSet<>();
+		
+		while(lottoNumber.size() < 6 ) {
+			int number = (int) (Math.random() * 45 + 1);
+			lottoNumber.add(number);
+		}
+		
+		System.out.print("로또 번호 : ");
+		
+		for( int i = 0 ; i < lottoNumber.size(); i++) {
+			if(lottoNumber.contains(i)) {
+				System.out.print(i + " ");
+			}
+		}
+		
+	}
+
+}

@@ -1,0 +1,28 @@
+import java.util.List;
+import java.util.Scanner;
+
+public class TodoFilter {
+
+	boolean find = false;
+
+	public void search(List<Todo> list) {
+
+		Scanner sc = new Scanner(System.in);
+		System.out.println("제목을 입력해주세요 : ");
+		String keyword = sc.nextLine();
+		
+		try {
+
+			for(int i = 0; i < list.size(); i++) {
+				if ()
+			}
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("오류발생 : " + e);
+		}
+
+	}
+
+}

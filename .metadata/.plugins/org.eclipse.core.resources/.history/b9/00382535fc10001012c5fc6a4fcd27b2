@@ -1,0 +1,17 @@
+package com.mystudy.socket02_echo;
+
+public class TCPClientEcho {
+
+	public static void main(String[] args) {
+		//(실습) 클라이언트 : 쓰고, 읽기
+		// 서버쪽으로 메시지를 보내기 - PrintWriter
+		// 서버쪽에서 보내온 메시지 받기 - BufferedReader
+		// PrintWriter <- OutputStream
+		// BufferedReader <- InputStreamReader <- InputStream
+		//------------------------------------------
+		
+		
+
+	}
+
+}

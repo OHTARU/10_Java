@@ -1,0 +1,31 @@
+// 1. 패키지 선언: 코드를 정리할 폴더 이름
+package Day250312;
+
+// 2. 부모 클래스 정의: 기본 차량 설계도
+class Vehicle {
+    // 3. 변수 선언: 차량의 속성
+    protected String brand = "Ford"; // 브랜드는 상속받는 클래스에서도 사용 가능
+
+    // 4. 메서드 작성: 경적 울리는 기능
+    public void honk() {
+        System.out.println("Tuut!"); // 경적 소리 출력
+    }
+}
+
+// 2. 자식 클래스 정의: Vehicle을 상속받아 확장
+public class Day250312_Inheritance extends Vehicle {
+    // 3. 변수 선언: 이 클래스만의 속성
+    private String modelName = "Mustang"; // 모델 이름은 이 클래스 내부에서만 사용
+
+    // 5. main 메서드: 프로그램 시작점
+    public static void main(String[] args) {
+        // 객체 생성: MyFirstCar 타입의 차량 만들기
+        Day250312_Inheritance myCar = new Day250312_Inheritance();
+
+        // 기능 테스트: 상속받은 메서드 호출
+        myCar.honk();
+
+        // 속성 출력: 브랜드와 모델 이름 조합
+        System.out.println(myCar.brand + " " + myCar.modelName);
+    }
+}

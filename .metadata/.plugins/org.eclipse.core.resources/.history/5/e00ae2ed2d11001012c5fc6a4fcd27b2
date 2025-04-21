@@ -1,0 +1,158 @@
+import java.io.*;
+import java.net.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+public class ChatServer {
+    private static final int PORT = 12345;
+    private static HashMap<String, ClientInfo> clients = new HashMap<>();
+    private static List<String> chatHistory = new ArrayList<>();
+    private static SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+
+    public static void main(String[] args) {
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+            InetAddress ip = InetAddress.getLocalHost();
+            System.out.println("서버 IP: " + ip.getHostAddress());
+            System.out.println("서버가 포트 " + PORT + "에서 시작되었습니다.");
+
+            Runtime.getRuntime().addShutdownHook(new Thread(() -> saveChatHistory()));
+
+            while (true) {
+                Socket clientSocket = serverSocket.accept();
+                new Handler(clientSocket).start();
+            }
+        } catch (IOException e) {
+            System.out.println("서버 시작 중 오류: " + e.getMessage());
+        }
+    }
+
+    private static void broadcast(String message) {
+        synchronized (clients) {
+            for (ClientInfo clientInfo : clients.values()) {
+                clientInfo.writer.println("TEXT:" + message);
+            }
+        }
+    }
+
+    private static void broadcastFile(String sender, String fileName, byte[] fileData) {
+        synchronized (clients) {
+            for (Map.Entry<String, ClientInfo> entry : clients.entrySet()) {
+                String clientUsername = entry.getKey();
+                ClientInfo clientInfo = entry.getValue();
+                PrintWriter writer = clientInfo.writer;
+
+                try {
+                    // 모든 클라이언트에게 파일 전송 알림
+                    writer.println("FILE_INFO:" + sender + ":" + fileName + ":" + fileData.length);
+                    writer.flush();
+
+                    // 파일을 보낸 클라이언트에게만 실제 파일 데이터를 전송
+                    if (sender.equals(clientUsername)) {
+                        OutputStream out = clientInfo.socket.getOutputStream();
+                        out.write(fileData);
+                        out.flush();
+                    }
+
+                } catch (IOException e) {
+                    System.out.println("파일 전송 중 오류: " + e.getMessage());
+                }
+            }
+        }
+    }
+
+    private static void saveChatHistory() {
+        try (PrintWriter writer = new PrintWriter("chat_history.txt")) {
+            for (String message : chatHistory) {
+                writer.println(message);
+            }
+            System.out.println("채팅 기록이 저장되었습니다.");
+        } catch (FileNotFoundException e) {
+            System.out.println("채팅 기록 저장 중 오류: " + e.getMessage());
+        }
+    }
+
+    private static class Handler extends Thread {
+        private Socket socket;
+        private PrintWriter out;
+        private BufferedReader in;
+        private String username;
+
+        public Handler(Socket socket) {
+            this.socket = socket;
+        }
+
+        public void run() {
+            try {
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                out = new PrintWriter(socket.getOutputStream(), true);
+
+                out.println("이름을 입력해주세요:");
+                out.flush(); // 이 부분을 추가
+
+                username = in.readLine();
+                if (username == null || username.trim().isEmpty()) {
+                    username = "익명" + new Random().nextInt(1000);
+                }
+
+                synchronized (clients) {
+                    clients.put(username, new ClientInfo(out, socket));
+                    out.println("TEXT:현재 접속자: " + String.join(", ", clients.keySet()));
+                    String joinMessage = "[알림] " + username + "님이 접속하였습니다.";
+                    chatHistory.add(joinMessage);
+                    broadcast(joinMessage);
+                }
+
+                String message;
+                while ((message = in.readLine()) != null) {
+                    if (message.startsWith("FILE:")) {
+                        String[] parts = message.split(":", 2);
+                        String fileName = parts[1];
+                        int fileSize = Integer.parseInt(in.readLine());
+                        byte[] fileData = new byte[fileSize];
+                        InputStream is = socket.getInputStream();
+                        int bytesRead = 0;
+                        while (bytesRead < fileSize) {
+                            bytesRead += is.read(fileData, bytesRead, fileSize - bytesRead);
+                        }
+                        String fileMessage = "[" + sdf.format(new Date()) + "] " + username + "님이 파일을 보냈습니다: " + fileName;
+                        chatHistory.add(fileMessage);
+                        broadcast(fileMessage);
+                        broadcastFile(username, fileName, fileData);
+                    } else {
+                        String formattedMessage = "[" + sdf.format(new Date()) + "] " + username + " : " + message;
+                        System.out.println("수신: " + formattedMessage);
+                        chatHistory.add(formattedMessage);
+                        broadcast(formattedMessage);
+                    }
+                }
+            } catch (IOException e) {
+                System.out.println("클라이언트 처리 중 오류: " + e.getMessage());
+            } finally {
+                if (username != null) {
+                    synchronized (clients) {
+                        clients.remove(username);
+                        String leaveMessage = "[알림] " + username + "님이 퇴장하였습니다.";
+                        chatHistory.add(leaveMessage);
+                        broadcast(leaveMessage);
+                    }
+                }
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    System.out.println("소켓 닫기 오류: " + e.getMessage());
+                }
+            }
+        }
+    }
+
+    // ClientInfo 클래스를 추가하여 PrintWriter와 Socket을 함께 저장
+    private static class ClientInfo {
+        public PrintWriter writer;
+        public Socket socket;
+
+        public ClientInfo(PrintWriter writer, Socket socket) {
+            this.writer = writer;
+            this.socket = socket;
+        }
+    }
+}

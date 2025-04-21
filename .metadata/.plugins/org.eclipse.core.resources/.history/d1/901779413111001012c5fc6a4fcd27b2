@@ -1,0 +1,164 @@
+import java.io.*;
+import java.net.*;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+public class ChatServer {
+	private static final int PORT = 12345;
+	private static HashMap<String, ClientInfo> clients = new HashMap<>();
+	private static List<String> chatHistory = new ArrayList<>();
+	private static SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+
+	public static void main(String[] args) {
+		try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+			InetAddress ip = InetAddress.getLocalHost();
+			System.out.println("서버 IP: " + ip.getHostAddress());
+			System.out.println("서버가 포트 " + PORT + "에서 시작되었습니다.");
+
+			Runtime.getRuntime().addShutdownHook(new Thread(() -> saveChatHistory()));
+
+			while (true) {
+				System.out.println("클라이언트 연결 대기...");
+				Socket clientSocket = serverSocket.accept();
+				System.out.println("클라이언트 연결됨: " + clientSocket.getInetAddress().getHostAddress());
+				new Handler(clientSocket).start();
+				System.out.println("Handler 스레드 시작됨");
+			}
+		} catch (IOException e) {
+			System.out.println("서버 시작 중 오류: " + e.getMessage());
+		}
+	}
+
+	private static void broadcast(String message) {
+		synchronized (clients) {
+			for (ClientInfo clientInfo : clients.values()) {
+				clientInfo.writer.println("TEXT:" + message);
+			}
+		}
+	}
+
+	private static void broadcastFile(String sender, String fileName, byte[] fileData) {
+		synchronized (clients) {
+			for (ClientInfo clientInfo : clients.values()) {
+				PrintWriter writer = clientInfo.writer;
+				try {
+					writer.println("FILE_INFO:" + sender + ":" + fileName + ":" + fileData.length);
+					OutputStream os = clientInfo.socket.getOutputStream();
+					os.write(fileData);
+					os.flush();
+				} catch (IOException e) {
+					System.out.println("파일 전송 오류: " + e.getMessage());
+				}
+			}
+		}
+	}
+
+	private static void saveChatHistory() {
+		try (PrintWriter writer = new PrintWriter(new FileWriter("chat_history.txt"))) {
+			for (String message : chatHistory) {
+				writer.println(message);
+			}
+			System.out.println("채팅 기록이 chat_history.txt에 저장되었습니다.");
+		} catch (IOException e) {
+			System.out.println("채팅 기록 저장 오류: " + e.getMessage());
+		}
+	}
+
+	private static class ClientInfo {
+		PrintWriter writer;
+		Socket socket;
+
+		public ClientInfo(PrintWriter writer, Socket socket) {
+			this.writer = writer;
+			this.socket = socket;
+		}
+	}
+
+	private static class Handler extends Thread {
+		private Socket socket;
+		private BufferedReader in;
+		private PrintWriter out;
+		private String username;
+
+		public Handler(Socket socket) {
+			this.socket = socket;
+		}
+
+		public void run() {
+			try {
+				in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+				out = new PrintWriter(socket.getOutputStream(), true);
+
+				username = in.readLine();
+				if (username == null || username.trim().isEmpty()) {
+					username = "익명" + new Random().nextInt(1000);
+				}
+
+				synchronized (clients) {
+					clients.put(username, new ClientInfo(out, socket));
+					out.println("TEXT:현재 접속자: " + String.join(", ", clients.keySet()));
+					String joinMessage = "[알림] " + username + "님이 접속하였습니다.";
+					chatHistory.add(joinMessage);
+					broadcast(joinMessage);
+				}
+
+				String message;
+				while ((message = in.readLine()) != null) {
+					System.out.println("메시지 수신됨: " + message);
+					if (message.startsWith("FILE:")) {
+						// 파일 정보 처리
+						String[] parts = message.split(":", 3);
+						String fileName = parts[1];
+						int fileSize = Integer.parseInt(parts[2]);
+
+						new Thread(() -> {
+							try {
+								byte[] fileData = new byte[fileSize];
+								InputStream is = socket.getInputStream();
+								int bytesRead = 0;
+								while (bytesRead < fileSize) {
+									int read = is.read(fileData, bytesRead, fileSize - bytesRead);
+									if (read == -1) {
+										System.out.println("오류: 파일 데이터를 모두 읽지 못했습니다.");
+										break;
+									}
+									bytesRead += read;
+								}
+
+								// 파일 전송 완료 후 메시지 처리
+								String confirmation = in.readLine(); // 파일 전송 완료 메시지 수신
+								if ("FILE_SENT".equals(confirmation)) {
+									broadcastFile(username, fileName, fileData);
+								}
+							} catch (IOException e) {
+								System.out.println("오류: 파일 데이터를 읽는 중 오류 발생: " + e.getMessage());
+							}
+						}).start();
+					} else {
+						// 일반 메시지 처리
+						String formattedMessage = "[" + sdf.format(new Date()) + "] " + username + " : " + message;
+						System.out.println("수신: " + formattedMessage);
+						chatHistory.add(formattedMessage);
+						broadcast(formattedMessage);
+					}
+				}
+
+			} catch (IOException e) {
+				System.out.println("클라이언트 처리 중 오류: " + e.getMessage());
+			} finally {
+				synchronized (clients) {
+					clients.remove(username);
+					String leaveMessage = "[알림] " + username + "님이 퇴장하였습니다.";
+					chatHistory.add(leaveMessage);
+					broadcast(leaveMessage);
+				}
+				try {
+					if (socket != null)
+						socket.close();
+				} catch (IOException e) {
+					System.err.println("소켓 닫기 오류: " + e.getMessage());
+				}
+			}
+		}
+	}
+}

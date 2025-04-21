@@ -1,0 +1,10 @@
+package com.mystudy.inetaddress;
+
+public class InetAddress_Exam {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

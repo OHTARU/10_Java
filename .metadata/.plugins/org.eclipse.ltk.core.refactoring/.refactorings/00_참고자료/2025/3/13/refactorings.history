@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;예외(Exception).txt&apos; to &apos;13_Exception&apos;&#x0D;&#x0A;- Original project: &apos;00_참고자료&apos;&#x0D;&#x0A;- Destination element: &apos;13_Exception&apos;&#x0D;&#x0A;- Original element: &apos;예외(Exception).txt&apos;" description="Copy file" element1="예외(Exception).txt" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1742785719292" target="/13_Exception" units="0" version="1.0"/>
+</session>

@@ -1,0 +1,10 @@
+package com.mystudy.jdbc1_statement;
+
+class SelectId_Student {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+
+}

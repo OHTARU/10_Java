@@ -1,0 +1,23 @@
+package com.mystudy.poly04_Interface;
+
+class Dog implements Animal {
+
+	@Override
+	public void eat() {
+		System.out.println(">>먹는다");
+		
+	}
+
+	@Override
+	public void sleep() {
+		System.out.println(">>잠을 잔다");
+		
+	}
+
+	@Override
+	public void sound() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

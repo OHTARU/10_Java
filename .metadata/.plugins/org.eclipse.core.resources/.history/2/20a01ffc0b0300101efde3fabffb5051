@@ -1,0 +1,32 @@
+package w3school_Example;
+
+class Main{
+	int x = 5;
+	
+	// final x = 5; << 이건 final 을 사용함으로써 값을 재정의 불가능
+	
+	int y = 3;
+	
+	
+	String fname = "창현";
+	String lname = "연";
+	int age = 25;
+}
+
+
+public class Day250311_ClassAttributes {
+
+	public static void main(String[] args) {
+
+		Main myObj = new Main();
+		
+		myObj.x = 40;
+		
+		System.out.println(myObj.x);
+		
+		
+		System.out.println("이름 : " + myObj.fname );
+		
+	}
+
+}

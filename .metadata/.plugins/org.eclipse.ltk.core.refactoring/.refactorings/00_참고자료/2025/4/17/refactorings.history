@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;JDBC프로그래밍절차.txt&apos; to &apos;26_JDBC&apos;&#x0D;&#x0A;- Original project: &apos;00_참고자료&apos;&#x0D;&#x0A;- Destination element: &apos;26_JDBC&apos;&#x0D;&#x0A;- Original element: &apos;JDBC프로그래밍절차.txt&apos;" description="Copy file" element1="JDBC프로그래밍절차.txt" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1745196351789" target="/26_JDBC" units="0" version="1.0"/>
+</session>

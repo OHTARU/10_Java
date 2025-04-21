@@ -1,0 +1,64 @@
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+public class ChatServer {
+    private static final int PORT = 12345; // 사용할 포트 번호
+    private static HashSet<PrintWriter> writers = new HashSet<>();
+
+    public static void main(String[] args) {
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+            InetAddress ip = InetAddress.getLocalHost();
+            System.out.println("서버 IP: " + ip.getHostAddress());
+            System.out.println("서버가 포트 " + PORT + "에서 시작되었습니다.");
+            
+            while (true) {
+                new Handler(serverSocket.accept()).start();
+            }
+        } catch (IOException e) {
+            System.out.println("서버 시작 중 오류: " + e.getMessage());
+        }
+    }
+
+    private static class Handler extends Thread {
+        private Socket socket;
+        private PrintWriter out;
+        private BufferedReader in;
+
+        public Handler(Socket socket) {
+            this.socket = socket;
+        }
+
+        public void run() {
+            try {
+                in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                out = new PrintWriter(socket.getOutputStream(), true);
+                
+                synchronized (writers) {
+                    writers.add(out);
+                }
+
+                String message;
+                while ((message = in.readLine()) != null) {
+                    System.out.println("수신: " + message);
+                    for (PrintWriter writer : writers) {
+                        writer.println(message);
+                    }
+                }
+            } catch (IOException e) {
+                System.out.println("클라이언트 처리 중 오류: " + e.getMessage());
+            } finally {
+                if (out != null) {
+                    synchronized (writers) {
+                        writers.remove(out);
+                    }
+                }
+                try {
+                    socket.close();
+                } catch (IOException e) {
+                    System.out.println("소켓 닫기 오류: " + e.getMessage());
+                }
+            }
+        }
+    }
+}

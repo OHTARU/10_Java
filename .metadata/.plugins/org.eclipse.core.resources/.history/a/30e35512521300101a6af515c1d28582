@@ -1,0 +1,15 @@
+package com.mystudy.net_multi1;
+
+//다중접속을 처리할 수 있는 서버(독립적인 쓰레드 - 읽기전용 쓰레드)
+public class TCPServerMulit_InnerClass {
+
+	public TCPServerMulit_InnerClass() {
+		serverStart();
+	}
+
+	private void serverStart() {
+
+		// 서버소켓을 만들고, 클라이언트의 접속 처리를 반복
+		System.out.println(">>> 서버 시작");
+	}
+}

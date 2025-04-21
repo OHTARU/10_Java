@@ -1,0 +1,26 @@
+package w3school.Example;
+
+
+abstract class Animal1{
+	public abstract void animalSound();
+	public void sleep() {
+		System.out.println("Zzz");
+	}
+}
+
+class Pig1 extends Animal1{
+	public void animalSound() {
+		System.out.println("The pig says : wee wee");
+	}
+}
+
+public class Day250317_Abstraction {
+
+	public static void main(String[] args) {
+
+		Pig1 myPig = new Pig1();
+		
+		
+	}
+
+}

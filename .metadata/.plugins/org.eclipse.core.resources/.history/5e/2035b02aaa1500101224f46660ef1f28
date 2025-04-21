@@ -1,0 +1,10 @@
+
+public class TodoListManager {
+
+	private static final String FILE_NAME = "todo.txt";
+
+	public static void main(String[] args) {
+
+	}
+
+}

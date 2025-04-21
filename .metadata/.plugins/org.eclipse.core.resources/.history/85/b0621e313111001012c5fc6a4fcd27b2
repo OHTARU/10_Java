@@ -1,0 +1,186 @@
+import java.io.*;
+import java.net.*;
+import java.nio.file.Files;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+public class ChatClient {
+    private static final String SERVER_ADDRESS = "192.168.18.31";
+    private static final int SERVER_PORT = 12345;
+
+    private JFrame frame;
+    private JTextArea chatArea;
+    private JTextField inputField;
+    private PrintWriter out;
+    private BufferedReader in;
+    private Socket socket;
+    private String username;
+
+    public ChatClient() {
+        initializeGUI();
+        connectToServer();
+    }
+
+    private void initializeGUI() {
+        frame = new JFrame("채팅 클라이언트");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
+
+        chatArea = new JTextArea();
+        chatArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(chatArea);
+
+        inputField = new JTextField();
+        JButton sendButton = new JButton("전송");
+        JButton fileButton = new JButton("파일");
+
+        sendButton.addActionListener(e -> sendMessage());
+        inputField.addActionListener(e -> sendMessage());
+        fileButton.addActionListener(e -> sendFile());
+
+        JPanel inputPanel = new JPanel(new BorderLayout());
+        JPanel buttonPanel = new JPanel(new GridLayout(1, 2));
+        buttonPanel.add(sendButton);
+        buttonPanel.add(fileButton);
+        inputPanel.add(inputField, BorderLayout.CENTER);
+        inputPanel.add(buttonPanel, BorderLayout.EAST);
+
+        frame.add(scrollPane, BorderLayout.CENTER);
+        frame.add(inputPanel, BorderLayout.SOUTH);
+
+        frame.setVisible(true);
+    }
+
+    private void connectToServer() {
+        try {
+            socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
+            out = new PrintWriter(socket.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+
+            username = JOptionPane.showInputDialog(frame, "이름을 입력해주세요:");
+            if (username == null || username.trim().isEmpty()) {
+                username = "익명";
+            }
+            out.println(username);
+
+            chatArea.append("서버 " + SERVER_ADDRESS + ":" + SERVER_PORT + "에 연결됨\n");
+
+            new Thread(() -> {
+                try {
+                    String message;
+                    while ((message = in.readLine()) != null) {
+                        if (message.startsWith("FILE_INFO:")) {
+                            String[] parts = message.split(":");
+                            String sender = parts[1];
+                            String fileName = parts[2];
+                            int fileSize = Integer.parseInt(parts[3]);
+
+                            // 파일 정보 표시 및 저장 여부 확인
+                            askToSaveFile(sender, fileName, fileSize);
+                        } else if (message.startsWith("TEXT:")) {
+                            synchronized (chatArea) {
+                                chatArea.append(message.substring(5) + "\n");
+                                chatArea.setCaretPosition(chatArea.getDocument().getLength());
+                            }
+                        }
+                    }
+                } catch (IOException e) {
+                    chatArea.append("메시지 수신 중 오류: " + e.getMessage() + "\n");
+                } finally {
+                    try {
+                        socket.close(); // 스레드 종료 시 소켓 닫기
+                    } catch (IOException e) {
+                        System.err.println("소켓 닫기 오류: " + e.getMessage());
+                    }
+                }
+            }).start();
+
+        } catch (IOException e) {
+            chatArea.append("서버 연결 중 오류: " + e.getMessage() + "\n");
+        }
+    }
+
+    private void sendMessage() {
+        String message = inputField.getText().trim();
+        if (!message.isEmpty() && out != null) {
+            out.println(message);
+            inputField.setText("");
+        }
+    }
+
+    private void sendFile() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new FileNameExtensionFilter("jpg", "png", "txt"));
+        if (fileChooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            new Thread(() -> {
+                try {
+                    byte[] fileData = Files.readAllBytes(file.toPath());
+                    String fileName = file.getName();
+                    int fileSize = fileData.length;
+
+                    // 서버에 파일 정보 전송
+                    out.println("FILE:" + fileName + ":" + fileSize);
+                    out.flush();
+
+                    // 파일 데이터 전송
+                    OutputStream os = socket.getOutputStream();
+                    os.write(fileData);
+                    os.flush();
+
+                    // 파일 전송 완료 메시지 전송
+                    out.println("FILE_SENT"); // 파일 전송 완료를 알리는 메시지
+                    chatArea.append("파일 전송: " + fileName + "\n");
+                } catch (IOException e) {
+                    chatArea.append("파일 전송 중 오류: " + e.getMessage() + "\n");
+                }
+            }).start();
+        }
+    }
+
+
+    private void askToSaveFile(String sender, String fileName, int fileSize) throws IOException {
+        int result = JOptionPane.showConfirmDialog(
+                frame,
+                sender + "님이 파일을 전송했습니다: " + fileName + " (" + fileSize + " bytes)\n저장하시겠습니까?",
+                "파일 저장",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (result == JOptionPane.YES_OPTION) {
+            downloadAndSaveFile(sender, fileName, fileSize);
+        } else {
+            chatArea.append("파일 저장 취소\n");
+        }
+    }
+
+    private void downloadAndSaveFile(String sender, String fileName, int fileSize) throws IOException {
+        // 파일 데이터를 다운로드
+        byte[] fileData = new byte[fileSize];
+        InputStream is = socket.getInputStream();
+        int bytesRead = 0;
+        while (bytesRead < fileSize) {
+            bytesRead += is.read(fileData, bytesRead, fileSize - bytesRead);
+        }
+
+        // 파일 저장 위치 및 이름 지정
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setSelectedFile(new File(fileName)); // 기본 파일 이름 설정
+        int userSelection = fileChooser.showSaveDialog(frame);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+            Files.write(fileToSave.toPath(), fileData);
+            chatArea.append("파일 저장 완료: " + fileToSave.getAbsolutePath() + "\n");
+        } else {
+            chatArea.append("파일 저장 취소\n");
+        }
+    }
+    
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(ChatClient::new);
+    }
+}

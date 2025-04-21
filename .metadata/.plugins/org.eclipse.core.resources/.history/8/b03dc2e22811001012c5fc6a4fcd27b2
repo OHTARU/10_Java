@@ -1,0 +1,40 @@
+import java.io.*;
+import java.net.*;
+import java.util.Scanner;
+
+public class ChatClient {
+    private static final String SERVER_ADDRESS = "211.245.48.71"; // 서버의 공인 IP로 변경
+    private static final int SERVER_PORT = 12345;
+
+    public static void main(String[] args) {
+        try (
+            Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))
+        ) {
+            System.out.println("서버 " + SERVER_ADDRESS + ":" + SERVER_PORT + "에 연결됨");
+
+            // 메시지 수신 스레드
+            new Thread(() -> {
+                try {
+                    String message;
+                    while ((message = in.readLine()) != null) {
+                        System.out.println(message);
+                    }
+                } catch (IOException e) {
+                    System.out.println("메시지 수신 중 오류: " + e.getMessage());
+                }
+            }).start();
+
+            // 메시지 전송
+            Scanner scanner = new Scanner(System.in);
+            String userInput;
+            while (true) {
+                userInput = scanner.nextLine();
+                out.println(userInput);
+            }
+        } catch (IOException e) {
+            System.out.println("서버 연결 중 오류: " + e.getMessage());
+        }
+    }
+}

@@ -1,0 +1,12 @@
+package com.mystudy.set1_hashset;
+
+public class HashSet_Lotto {
+
+	public static void main(String[] args) {
+		
+		// Set을 이용한 로또 번호 만들기 : 1 ~ 45 숫자 중 6개 (랜덤숫자)를 Set 에 저장
+		// 1. 로또 번호 6개를 추첨해서 Set에 저장하고 화면 출력
+		
+	}
+
+}

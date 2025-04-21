@@ -1,0 +1,7 @@
+package com.mystudy.innerclass;
+
+public class LocalClass {
+	int a = 100;
+	
+	
+}

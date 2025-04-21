@@ -1,0 +1,26 @@
+package com.mystudy.innerclass;
+
+
+interface TestInter{
+	int DATA = 100;
+	void printData();
+}
+
+class TestInterImpl implements TestInter{
+	@Override
+	public void printData() {
+		System.out.println(">> 구현한 메소드");
+	}
+}
+
+
+public class AnnonymousClassTest {
+
+	public static void main(String[] args) {
+		TestInterImpl imp = new TestInterImpl();
+		imp.printData();
+		
+		
+	}
+
+}

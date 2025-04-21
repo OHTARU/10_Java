@@ -1,0 +1,87 @@
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+public class ChatClient {
+    private static final String SERVER_ADDRESS = "192.168.18.31";
+    private static final int SERVER_PORT = 12345;
+    private static final int MAX_LINES = 20; // 표시할 최대 채팅 줄 수
+    private static List<String> messages = new ArrayList<>();
+    
+    public static void main(String[] args) {
+        try (
+            Socket socket = new Socket(SERVER_ADDRESS, SERVER_PORT);
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))
+        ) {
+            System.out.println("서버 " + SERVER_ADDRESS + ":" + SERVER_PORT + "에 연결됨");
+
+            // 이름 입력
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("이름을 입력하세요: ");
+            String username = scanner.nextLine();
+            out.println(username); // 서버에 이름 전송
+
+            // 메시지 수신 스레드
+            new Thread(() -> {
+                try {
+                    String message;
+                    while ((message = in.readLine()) != null) {
+                        synchronized (messages) {
+                            messages.add(message);
+                            if (messages.size() > MAX_LINES) {
+                                messages.remove(0);
+                            }
+                        }
+                        displayChat();
+                    }
+                } catch (IOException e) {
+                    System.out.println("메시지 수신 중 오류: " + e.getMessage());
+                }
+            }).start();
+
+            // 메시지 입력 및 전송
+            while (true) {
+                displayChat();
+                System.out.print("메시지 : ");
+                String userInput = scanner.nextLine();
+                out.println(userInput);
+            }
+        } catch (IOException e) {
+            System.out.println("서버 연결 중 오류: " + e.getMessage());
+        }
+    }
+
+    private static void displayChat() {
+        // 콘솔 클리어
+        try {
+            if (System.getProperty("os.name").contains("Windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+        } catch (Exception e) {
+            for (int i = 0; i < MAX_LINES + 2; i++) {
+                System.out.println();
+            }
+        }
+
+        // 채팅 메시지 표시
+        synchronized (messages) {
+            for (String message : messages) {
+                System.out.println(message);
+            }
+            // 구분선과 입력 프롬프트 표시
+            int emptyLines = MAX_LINES - messages.size();
+            if (emptyLines > 0) {
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < emptyLines - 1; i++) {
+                    sb.append("\n");
+                }
+                System.out.print(sb.toString());
+            }
+            System.out.println("---------------------");
+        }
+    }
+}

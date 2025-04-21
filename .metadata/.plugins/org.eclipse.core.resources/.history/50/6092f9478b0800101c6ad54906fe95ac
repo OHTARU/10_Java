@@ -1,0 +1,9 @@
+package com.mystudy.innerclass;
+
+public class AnnonymousClassTest {
+
+	public static void main(String[] args) {
+
+	}
+
+}

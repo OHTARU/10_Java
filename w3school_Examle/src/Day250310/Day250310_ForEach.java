@@ -1,0 +1,42 @@
+package Day250310;
+
+public class Day250310_ForEach {
+
+	public static void main(String[] args) {
+		
+//		String[] cars = {"Volvo" , "BMW" , "Ford" , "Mazda"};
+//		for (String i : cars) {
+//			System.out.println(i);
+//		}
+
+
+		int ages[] = {20, 22, 18, 35, 48, 26, 87, 70};
+//		
+//		float avg = 0f;
+//		int sum = 0;
+//		
+		int length = ages.length;
+//		
+//		for (int age : ages) {
+//			sum += age;
+//			System.out.println("총합 : " + sum + " , 나이 : " + age);
+//		}
+//		
+//		avg = sum / length;
+//		
+//		System.out.println(avg);
+		
+		
+		int lowestAge = ages[0];
+		
+		for (int age : ages) {
+			if (lowestAge > age) {
+				lowestAge = age;
+			}
+			System.out.println("비교" + lowestAge);
+		}
+		System.out.println(lowestAge);
+		
+	}
+
+}

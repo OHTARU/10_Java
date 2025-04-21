@@ -1,0 +1,14 @@
+package com.mystudy.innerclass;
+
+public class LocalClass {
+	int a = 100;
+
+	void print() {
+		System.out.println("a : " + a);
+	}
+	
+	void innerTest(int k) {
+		int b = 50; // Local Variable ( 지역 변수 )
+		int c = k;
+	}
+}
