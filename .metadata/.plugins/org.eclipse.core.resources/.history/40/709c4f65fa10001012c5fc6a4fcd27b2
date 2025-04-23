@@ -1,9 +1,0 @@
-package com.mystudy.socket02_echo;
-
-public class TCPClientEcho {
-
-	public static void main(String[] args) {
-
-	}
-
-}

@@ -6,7 +6,7 @@
 	<item key="TypeHierarchyViewPart.qualifiednames" value="false"/>
 	<item key="TypeHierarchyViewPart.linkeditors" value="false"/>
 	<item key="TypeHierarchyViewPart.orientation" value="3"/>
-	<item key="org.eclipse.jdt.ui.last.external.project" value="C:\Users\ITWILL\Desktop\공부파일\ITWILL_Project"/>
+	<item key="org.eclipse.jdt.ui.last.external.project" value="C:\Users\ITWILL\Desktop\공부파일\itwill_project"/>
 	<section name="org.eclipse.jdt.internal.ui.packageview.PackageExplorerPart">
 		<item key="group_libraries" value="true"/>
 		<item key="layout" value="2"/>
@@ -135,5 +135,8 @@
 		<list key="JarPackageWizardPage.DESTINATION_NAMES_ID">
 			<item value="C:\Users\ITWILL\Desktop\cafe.jar"/>
 		</list>
+	</section>
+	<section name="BuildPathsPropertyPage">
+		<item key="pageIndex" value="2"/>
 	</section>
 </section>

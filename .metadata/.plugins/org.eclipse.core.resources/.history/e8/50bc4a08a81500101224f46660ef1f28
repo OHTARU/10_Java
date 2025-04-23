@@ -1,9 +1,0 @@
-import java.util.Scanner;
-
-public class TodoFilter {
-
-	public void search(List<Todo>) {
-		Scanner sc = new Scanner(System.in);
-	}
-
-}
